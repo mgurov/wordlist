@@ -125,7 +125,7 @@ const FormGroup = React.createClass({
   },
   
   onValueChangeHandler: function(e) {
-    const value = e.target.value; 
+    const value = e.target.value.toLowerCase(); 
     this.setState({value});
     this.setValidationStatus('');
     this.debounce((value == this.props.text) ? 'has-success' : 'has-error')
@@ -140,7 +140,9 @@ const FormGroup = React.createClass({
               id={id} 
               className="form-control input-lg" 
               type="text"
-              autoComplete="off" 
+              autoComplete="off"
+              autoCapitalize="none"
+              autoCorrect="off" 
               placeholder={caption} 
               value={this.state.value} 
               onChange={this.onValueChangeHandler}/>
