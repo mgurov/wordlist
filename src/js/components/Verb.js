@@ -1,6 +1,5 @@
 import React from "react";
 import Notes from "./verb/Notes.js";
-import CheckingInput from "./verb/CheckingInput.js";
 
 export default function({verb}) {
     return (

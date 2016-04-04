@@ -47,7 +47,7 @@ const hardcodedWordList = [
             ["denken", "dacht", "dachten", "gedacht", "думать"],
             ["doen", "deed", "deed", "gedaan", "делать"],
             ["dragen", "droeg", "droegen", "gedragen", "тянуть"],
-            ["drijven", "dreef", "dreeven", "(is) gedreven", "пливсти загоняти"],
+            ["drijven", "dreef", "dreven", "(is) gedreven", "пливсти загоняти"],
             ["dringen", "drong", "drongen", "gedrongen", "давить, топлой"],
             ["drinken", "dronk", "dronken", "gedronken", "пить"],
             ["dwingen", "dwong", "dwongen", "gedwongen", "заставлять"],
