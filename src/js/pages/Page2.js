@@ -140,7 +140,7 @@ const VerbEntryForm = React.createClass({
     
     const inputFields = ['imperfect_singular', 'imperfect_plural', 'perfect'].map((key, index) => {
         const form = verb[key];
-        return <FormGroup id={key} caption={form.caption} autoFocus={index == 0}  
+        return <FormGroup key={key} id={key} caption={form.caption} autoFocus={index == 0}  
           text={form.expected} showAnswer={showAnswers} 
           value={form.actual} onChange={onChangeHandlerFactory(key)} />
     });
