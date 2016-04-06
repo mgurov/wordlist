@@ -146,7 +146,7 @@ const VerbEntryForm = React.createClass({
     });
     
     return (
-      <form>
+      <form onKeyDown={this._onKeyDown}>
         <div class="form-group">
           <h3>{verb.infinitive}</h3>
           <p class="help-block"><Notes text={verb.notes}/></p>
@@ -155,7 +155,27 @@ const VerbEntryForm = React.createClass({
         {this.props.children}
       </form>
     );
-  }
+  },
+  
+  _allAnsweredCorrectly: function() {
+    const {verb} = this.state;
+    //TODO: describe at the model
+    const anyFalse = _.find(['imperfect_singular', 'imperfect_plural', 'perfect'], (key) => {
+      return verb[key].actual != verb[key].expected; 
+    });
+    return !anyFalse;
+  },
+  
+  _onKeyDown : function(event) {
+    const ENTER_KEY_CODE = 13;
+    if (event.keyCode == ENTER_KEY_CODE && !this._allAnsweredCorrectly()) {
+      event.preventDefault();
+      return false;
+    }
+    return false;
+  },
+
+  
 });
 
 const FormGroup = React.createClass({
@@ -185,15 +205,7 @@ const FormGroup = React.createClass({
       this.debounce();
     }
   },
-  
-  _onKeyDown : function(event) {
-    const ENTER_KEY_CODE = 13;
-    /*if (event.keyCode === ENTER_KEY_CODE) {
-      event.preventDefault();
-      return false;
-    }*/
-  },
-  
+    
   render: function() {
     const {id, caption, showAnswer, ...rest} = this.props;
         
@@ -206,7 +218,6 @@ const FormGroup = React.createClass({
               autoComplete="off"
               autoCapitalize="none"
               autoCorrect="off"
-              onKeyDown={this._onKeyDown}
               onBlur={this.reEvaluate} 
               />
           </div>
