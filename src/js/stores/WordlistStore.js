@@ -27,7 +27,7 @@ const hardcodedWordList = [
             ["betreffen", "betrof", "betroffen", "betroffen", "касаться"],
             ["bevelen", "beval", "bevalen", "bevolen", "приказывать"],
             ["bewegen", "bewoog", "bewogen", "bewogen", "двигаться, шевелиться"],
-            ["bewijzen", "bewees", "bewogen", "bewogen", "двигаться, шевелиться"],
+            ["bewijzen", "bewees", "bewezen", "bewezen", "двигаться, шевелиться"],
             ["bidden", "bad", "baden", "gebeden", "молить(ся)"],
             ["bieden", "bood", "boden", "geboden", "предлагать в т.ч. платно"],
             ["bijten", "beet", "beten", "gebeten"],
