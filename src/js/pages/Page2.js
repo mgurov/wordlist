@@ -181,7 +181,7 @@ const FormGroup = React.createClass({
   componentWillReceiveProps: function(newProps) {
     if (this.props.text != newProps.text || this.props.value != newProps.value) {
       this.withdrawEvaluation();      
-      this.debounce()
+      this.debounce();
     }
   },
       
