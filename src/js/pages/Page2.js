@@ -185,6 +185,14 @@ const FormGroup = React.createClass({
       this.debounce();
     }
   },
+  
+  _onKeyDown : function(event) {
+    const ENTER_KEY_CODE = 13;
+    /*if (event.keyCode === ENTER_KEY_CODE) {
+      event.preventDefault();
+      return false;
+    }*/
+  },
       
   render: function() {
     const {id, caption, showAnswer, ...rest} = this.props;
@@ -197,7 +205,8 @@ const FormGroup = React.createClass({
               type="text"
               autoComplete="off"
               autoCapitalize="none"
-              autoCorrect="off" 
+              autoCorrect="off"
+              onKeyDown={this._onKeyDown} 
               />
           </div>
   }
