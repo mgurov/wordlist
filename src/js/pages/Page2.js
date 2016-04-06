@@ -158,21 +158,33 @@ const VerbEntryForm = React.createClass({
 });
 
 const FormGroup = React.createClass({
-  mixins: [Debouncer(function(validationClass){this.setValidationStatus(validationClass)})],
+  mixins: [Debouncer(function(){this.reEvaluate()})],
     
-  getInitialState: function() {return {validationClass:''}},
+  getInitialState: function() {return {validationClass: this.evaluateAnswer()}},
   
-  setValidationStatus: function (validationClass) {
+  evaluateAnswer: function() {
+     return (this.props.value == this.props.text) ? 'has-success' : 'has-error';
+  },
+  
+  reEvaluate: function() {
+    this.setValidationStatus(this.evaluateAnswer());
+  },
+  
+  withdrawEvaluation: function() {
+    this.setValidationStatus('');
+  },
+  
+  setValidationStatus: function(validationClass) {
     this.setState({validationClass});
   },
   
-  onValueChangeHandler: function(e) {
-    this.props.onChange(e);
-    const newValue = e.target.value.toLowerCase(); 
-    this.setValidationStatus('');
-    this.debounce((newValue == this.props.text) ? 'has-success' : 'has-error')
+  componentWillReceiveProps: function(newProps) {
+    if (this.props.text != newProps.text || this.props.value != newProps.value) {
+      this.withdrawEvaluation();      
+      this.debounce()
+    }
   },
-  
+      
   render: function() {
     const {id, caption, showAnswer, ...rest} = this.props;
         
@@ -186,7 +198,7 @@ const FormGroup = React.createClass({
               autoCapitalize="none"
               autoCorrect="off" 
               placeholder={caption} 
-              onChange={this.onValueChangeHandler}/>
+              />
           </div>
   }
 });
