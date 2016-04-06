@@ -19,8 +19,6 @@ export default React.createClass({
       'perfect': 'Perfectum', 
     };
 
-    const wordToStateful = (w) => {
-    };
     const words = 
       _.sampleSize(WordlistStore.getAll(), sampleSize)
       .map((w)=>{
