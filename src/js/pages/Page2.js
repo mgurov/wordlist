@@ -193,7 +193,7 @@ const FormGroup = React.createClass({
       return false;
     }*/
   },
-      
+  
   render: function() {
     const {id, caption, showAnswer, ...rest} = this.props;
         
@@ -206,7 +206,8 @@ const FormGroup = React.createClass({
               autoComplete="off"
               autoCapitalize="none"
               autoCorrect="off"
-              onKeyDown={this._onKeyDown} 
+              onKeyDown={this._onKeyDown}
+              onBlur={this.reEvaluate} 
               />
           </div>
   }
