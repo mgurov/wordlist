@@ -21,8 +21,8 @@ export default React.createClass({
     const words = _.sampleSize(WordlistStore.getAll(), sampleSize)
       .map((w)=>{
         const verb = _.extend({}, w);
-        verb.imperfect.singular = wordToStateful(verb.imperfect.singular);
-        verb.imperfect.plural = wordToStateful(verb.imperfect.plural);
+        verb.imperfect_singular = wordToStateful(verb.imperfect.singular);
+        verb.imperfect_plural = wordToStateful(verb.imperfect.plural);
         verb.perfect = wordToStateful(verb.perfect);
         return verb;
     });
@@ -143,11 +143,14 @@ const VerbEntryForm = React.createClass({
           <p class="help-block"><Notes text={verb.notes}/></p>
         </div>
         <FormGroup id="impf.s" caption="Imperfectum singular" autoFocus  
-          text={verb.imperfect.singular.expected} showAnswer={showAnswers} />
+          text={verb.imperfect_singular.expected} showAnswer={showAnswers} 
+          value={verb.imperfect_singular.actual} onChange={onChangeHandlerFactory('imperfect_singular')} />
         <FormGroup id="impf.p" caption="Imperfectum plural" 
-          text={verb.imperfect.plural.expected} showAnswer={showAnswers} />
+          text={verb.imperfect_plural.expected} showAnswer={showAnswers} 
+          value={verb.imperfect_plural.actual} onChange={onChangeHandlerFactory('imperfect_plural')} />
         <FormGroup id="impf.s" caption="Perfectum" 
-          text={verb.perfect.expected} showAnswer={showAnswers} value={verb.perfect.actual} onChange={onChangeHandlerFactory('perfect')}/>
+          text={verb.perfect.expected} showAnswer={showAnswers} 
+          value={verb.perfect.actual} onChange={onChangeHandlerFactory('perfect')} />
         {this.props.children}
       </form>
     );
