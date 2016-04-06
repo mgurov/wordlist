@@ -160,32 +160,22 @@ const VerbEntryForm = React.createClass({
 const FormGroup = React.createClass({
   mixins: [Debouncer(function(validationClass){this.setValidationStatus(validationClass)})],
     
-  getInitialState: function() {return {validationClass:'', value: ''}},
+  getInitialState: function() {return {validationClass:''}},
   
   setValidationStatus: function (validationClass) {
     this.setState({validationClass});
   },
   
   onValueChangeHandler: function(e) {
-    if (this.props.onChange) {
-      this.props.onChange(e);
-    }
-    const value = e.target.value.toLowerCase(); 
-    this.setState({value});
+    this.props.onChange(e);
+    const newValue = e.target.value.toLowerCase(); 
     this.setValidationStatus('');
-    this.debounce((value == this.props.text) ? 'has-success' : 'has-error')
+    this.debounce((newValue == this.props.text) ? 'has-success' : 'has-error')
   },
   
   render: function() {
     const {id, caption, showAnswer, ...rest} = this.props;
-    
-    var value;
-    if (rest.onChange) {
-      value = rest.value;
-    } else {
-      value = this.state.value;
-    }
-    
+        
     return <div className={"form-group " + this.state.validationClass}>
             <label htmlFor={id}>{caption}{showAnswer ? ' -> ' + this.props.text : ''}</label>
             <input {...rest} 
@@ -196,7 +186,6 @@ const FormGroup = React.createClass({
               autoCapitalize="none"
               autoCorrect="off" 
               placeholder={caption} 
-              value={value} 
               onChange={this.onValueChangeHandler}/>
           </div>
   }
