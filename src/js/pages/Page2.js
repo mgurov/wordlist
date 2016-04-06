@@ -161,7 +161,7 @@ const VerbEntryForm = React.createClass({
 const FormGroup = React.createClass({
   mixins: [Debouncer(function(){this.reEvaluate()})],
     
-  getInitialState: function() {return {validationClass: ''}},
+  getInitialState: function() {return {evaluationClass: ''}},
   
   evaluateAnswer: function() {
      return (this.props.value == this.props.text) ? 'has-success' : 'has-error';
@@ -175,8 +175,8 @@ const FormGroup = React.createClass({
     this.setValidationStatus('');
   },
   
-  setValidationStatus: function(validationClass) {
-    this.setState({validationClass});
+  setValidationStatus: function(evaluationClass) {
+    this.setState({evaluationClass});
   },
   
   componentWillReceiveProps: function(newProps) {
@@ -189,7 +189,7 @@ const FormGroup = React.createClass({
   render: function() {
     const {id, caption, showAnswer, ...rest} = this.props;
         
-    return <div className={"form-group " + this.state.validationClass}>
+    return <div className={"form-group " + this.state.evaluationClass}>
             <label htmlFor={id}>{caption}{showAnswer ? ' -> ' + this.props.text : ''}</label>
             <input {...rest} 
               id={id} 
