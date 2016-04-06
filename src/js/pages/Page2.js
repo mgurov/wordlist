@@ -125,9 +125,12 @@ const VerbEntryForm = React.createClass({
           <h3>{verb.infinitive}</h3>
           <p class="help-block"><Notes text={verb.notes}/></p>
         </div>
-        <FormGroup id="impf.s" text={verb.imperfect.singular.expected} autoFocus caption="Imperfectum singular" showAnswer={showAnswers} />
-        <FormGroup id="impf.p" text={verb.imperfect.plural.expected} caption="Imperfectum plural" showAnswer={showAnswers} />
-        <FormGroup id="impf.s" text={verb.perfect.expected} caption="Perfectum" showAnswer={showAnswers} />
+        <FormGroup id="impf.s" caption="Imperfectum singular" autoFocus  
+          text={verb.imperfect.singular.expected} showAnswer={showAnswers} />
+        <FormGroup id="impf.p" caption="Imperfectum plural" 
+          text={verb.imperfect.plural.expected} showAnswer={showAnswers} />
+        <FormGroup id="impf.s" caption="Perfectum" 
+          text={verb.perfect.expected} showAnswer={showAnswers}/>
         {this.props.children}
       </form>
     );
