@@ -117,8 +117,25 @@ const RandomRow = React.createClass({
 });
 
 const VerbEntryForm = React.createClass({
+  
+  getInitialState: function() {
+    return {
+      verb: this.props.verb,
+    };
+  },
+
+  
   render: function() {
-    const {verb, showAnswers} = this.props;
+    const {showAnswers} = this.props;
+    const {verb} = this.state;
+    const that = this;
+    function onChangeHandlerFactory (key) {
+      return function(e) {
+        const newValue = e.target.value.toLowerCase();
+        verb[key].actual = newValue;
+        that.setState({verb});
+      }
+    }
     return (
       <form>
         <div class="form-group">
@@ -130,7 +147,7 @@ const VerbEntryForm = React.createClass({
         <FormGroup id="impf.p" caption="Imperfectum plural" 
           text={verb.imperfect.plural.expected} showAnswer={showAnswers} />
         <FormGroup id="impf.s" caption="Perfectum" 
-          text={verb.perfect.expected} showAnswer={showAnswers}/>
+          text={verb.perfect.expected} showAnswer={showAnswers} value={verb.perfect.actual} onChange={onChangeHandlerFactory('perfect')}/>
         {this.props.children}
       </form>
     );
@@ -147,6 +164,9 @@ const FormGroup = React.createClass({
   },
   
   onValueChangeHandler: function(e) {
+    if (this.props.onChange) {
+      this.props.onChange(e);
+    }
     const value = e.target.value.toLowerCase(); 
     this.setState({value});
     this.setValidationStatus('');
@@ -155,6 +175,13 @@ const FormGroup = React.createClass({
   
   render: function() {
     const {id, caption, showAnswer, ...rest} = this.props;
+    
+    var value;
+    if (rest.onChange) {
+      value = rest.value;
+    } else {
+      value = this.state.value;
+    }
     
     return <div className={"form-group " + this.state.validationClass}>
             <label htmlFor={id}>{caption}{showAnswer ? ' -> ' + this.props.text : ''}</label>
@@ -166,7 +193,7 @@ const FormGroup = React.createClass({
               autoCapitalize="none"
               autoCorrect="off" 
               placeholder={caption} 
-              value={this.state.value} 
+              value={value} 
               onChange={this.onValueChangeHandler}/>
           </div>
   }
