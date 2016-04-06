@@ -161,7 +161,7 @@ const VerbEntryForm = React.createClass({
 const FormGroup = React.createClass({
   mixins: [Debouncer(function(){this.reEvaluate()})],
     
-  getInitialState: function() {return {validationClass: this.evaluateAnswer()}},
+  getInitialState: function() {return {validationClass: ''}},
   
   evaluateAnswer: function() {
      return (this.props.value == this.props.text) ? 'has-success' : 'has-error';
