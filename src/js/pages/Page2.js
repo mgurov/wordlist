@@ -167,9 +167,8 @@ const VerbEntryForm = React.createClass({
   
   _allAnsweredCorrectly: function() {
     const {verb} = this.state;
-    //TODO: describe at the model
-    const anyFalse = _.find(['imperfect_singular', 'imperfect_plural', 'perfect'], (key) => {
-      return verb[key].actual != verb[key].expected; 
+    const anyFalse = _.find(verb.forms, (form) => {
+      return form.actual != form.expected; 
     });
     return !anyFalse;
   },
