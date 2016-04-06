@@ -20,10 +20,10 @@ export default React.createClass({
     };
     const words = _.sampleSize(WordlistStore.getAll(), sampleSize)
       .map((w)=>{
-        const verb = _.extend({}, w);
-        verb.imperfect_singular = wordToStateful(verb.imperfect.singular);
-        verb.imperfect_plural = wordToStateful(verb.imperfect.plural);
-        verb.perfect = wordToStateful(verb.perfect);
+        const verb = _.pick(w, 'infinitive', 'notes');
+        verb.imperfect_singular = wordToStateful(w.imperfect.singular);
+        verb.imperfect_plural = wordToStateful(w.imperfect.plural);
+        verb.perfect = wordToStateful(w.perfect);
         return verb;
     });
     
