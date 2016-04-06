@@ -11,8 +11,27 @@ export default React.createClass({
     };
   },
   
-  onGo: function(size) {
-    this.setState({words: _.sampleSize(WordlistStore.getAll(), size)})
+  loadSample: function(sampleSize) {
+    const wordToStateful = (w) => {
+      return {
+        expected: w,
+        actual: '',
+      };
+    };
+    const words = _.sampleSize(WordlistStore.getAll(), sampleSize)
+      .map((w)=>{
+        const verb = _.extend({}, w);
+        verb.imperfect.singular = wordToStateful(verb.imperfect.singular);
+        verb.imperfect.plural = wordToStateful(verb.imperfect.plural);
+        verb.perfect = wordToStateful(verb.perfect);
+        return verb;
+    });
+    
+    return words;
+  },
+  
+  onGo: function(size) {    
+    this.setState({words: this.loadSample(size)})
   },
   
   componentWillReceiveProps: function(newProps) {
@@ -106,9 +125,9 @@ const VerbEntryForm = React.createClass({
           <h3>{verb.infinitive}</h3>
           <p class="help-block"><Notes text={verb.notes}/></p>
         </div>
-        <FormGroup id="impf.s" text={verb.imperfect.singular} autoFocus caption="Imperfectum singular" showAnswer={showAnswers} />
-        <FormGroup id="impf.p" text={verb.imperfect.plural} caption="Imperfectum plural" showAnswer={showAnswers} />
-        <FormGroup id="impf.s" text={verb.perfect} caption="Perfectum" showAnswer={showAnswers} />
+        <FormGroup id="impf.s" text={verb.imperfect.singular.expected} autoFocus caption="Imperfectum singular" showAnswer={showAnswers} />
+        <FormGroup id="impf.p" text={verb.imperfect.plural.expected} caption="Imperfectum plural" showAnswer={showAnswers} />
+        <FormGroup id="impf.s" text={verb.perfect.expected} caption="Perfectum" showAnswer={showAnswers} />
         {this.props.children}
       </form>
     );
