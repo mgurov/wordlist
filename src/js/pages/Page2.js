@@ -12,21 +12,29 @@ export default React.createClass({
   },
   
   loadSample: function(sampleSize) {
-    const wordToStateful = (w, caption) => {
-      return {
-        expected: w,
-        actual: '',
-        caption: caption,
-      };
+    
+   const captionMapping = {
+      'imperfect_singular': 'Imperfectum singular',
+      'imperfect_plural': 'Imperfectum plural',
+      'perfect': 'Perfectum', 
     };
-    const words = _.sampleSize(WordlistStore.getAll(), sampleSize)
+
+    const wordToStateful = (w) => {
+    };
+    const words = 
+      _.sampleSize(WordlistStore.getAll(), sampleSize)
       .map((w)=>{
         const verb = _.pick(w, 'infinitive', 'notes');
-        verb.imperfect_singular = wordToStateful(w.imperfect.singular, "Imperfectum singular");
-        verb.imperfect_plural = wordToStateful(w.imperfect.plural, "Imperfectum plural");
-        verb.perfect = wordToStateful(w.perfect, "Perfectum");
+        verb.forms = _.mapValues(w.forms, (form, key)=>{
+          return {
+            key,
+            expected: form,
+            actual: '',
+            caption: captionMapping[key],
+          };
+        });
         return verb;
-    });
+      });
     
     return words;
   },
@@ -133,13 +141,13 @@ const VerbEntryForm = React.createClass({
     function onChangeHandlerFactory (key) {
       return function(e) {
         const newValue = e.target.value.toLowerCase();
-        verb[key].actual = newValue;
+        verb.forms[key].actual = newValue;
         that.setState({verb});
       }
     }
     
     const inputFields = ['imperfect_singular', 'imperfect_plural', 'perfect'].map((key, index) => {
-        const form = verb[key];
+        const form = verb.forms[key];
         return <FormGroup key={key} id={key} caption={form.caption} autoFocus={index == 0}  
           text={form.expected} showAnswer={showAnswers} placeholder={verb.infinitive}
           value={form.actual} onChange={onChangeHandlerFactory(key)} />

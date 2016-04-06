@@ -3,8 +3,11 @@ class WordlistStore {
   constructor() {
     this.verbs = hardcodedWordList.map((w) => {return {
       "infinitive" : w[0],
-      "imperfect" : {"singular" : w[1], "plural" : w[2]},
-      "perfect" : w[3],
+      "forms": {
+        "imperfect_singular" : w[1],
+        "imperfect_plural" : w[2],
+        "perfect" : w[3],
+      },
       "notes" : w[4]
       };
     });
