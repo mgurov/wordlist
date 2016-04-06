@@ -12,18 +12,19 @@ export default React.createClass({
   },
   
   loadSample: function(sampleSize) {
-    const wordToStateful = (w) => {
+    const wordToStateful = (w, caption) => {
       return {
         expected: w,
         actual: '',
+        caption: caption,
       };
     };
     const words = _.sampleSize(WordlistStore.getAll(), sampleSize)
       .map((w)=>{
         const verb = _.pick(w, 'infinitive', 'notes');
-        verb.imperfect_singular = wordToStateful(w.imperfect.singular);
-        verb.imperfect_plural = wordToStateful(w.imperfect.plural);
-        verb.perfect = wordToStateful(w.perfect);
+        verb.imperfect_singular = wordToStateful(w.imperfect.singular, "Imperfectum singular");
+        verb.imperfect_plural = wordToStateful(w.imperfect.plural, "Imperfectum plural");
+        verb.perfect = wordToStateful(w.perfect, "Perfectum");
         return verb;
     });
     
@@ -136,21 +137,21 @@ const VerbEntryForm = React.createClass({
         that.setState({verb});
       }
     }
+    
+    const inputFields = ['imperfect_singular', 'imperfect_plural', 'perfect'].map((key, index) => {
+        const form = verb[key];
+        return <FormGroup id={key} caption={form.caption} autoFocus={index == 0}  
+          text={form.expected} showAnswer={showAnswers} 
+          value={form.actual} onChange={onChangeHandlerFactory(key)} />
+    });
+    
     return (
       <form>
         <div class="form-group">
           <h3>{verb.infinitive}</h3>
           <p class="help-block"><Notes text={verb.notes}/></p>
         </div>
-        <FormGroup id="impf.s" caption="Imperfectum singular" autoFocus  
-          text={verb.imperfect_singular.expected} showAnswer={showAnswers} 
-          value={verb.imperfect_singular.actual} onChange={onChangeHandlerFactory('imperfect_singular')} />
-        <FormGroup id="impf.p" caption="Imperfectum plural" 
-          text={verb.imperfect_plural.expected} showAnswer={showAnswers} 
-          value={verb.imperfect_plural.actual} onChange={onChangeHandlerFactory('imperfect_plural')} />
-        <FormGroup id="impf.s" caption="Perfectum" 
-          text={verb.perfect.expected} showAnswer={showAnswers} 
-          value={verb.perfect.actual} onChange={onChangeHandlerFactory('perfect')} />
+        {inputFields}
         {this.props.children}
       </form>
     );
