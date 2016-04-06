@@ -107,7 +107,7 @@ const RandomRow = React.createClass({
   },
   
   onHelpClickHandler: function() {
-    this.setState({showAnswers: true});
+    this.setState({showAnswers: !this.state.showAnswers});
   },
   
   isEof: function() {
@@ -116,11 +116,20 @@ const RandomRow = React.createClass({
   
   render: function() {
     const verb = this.getCurrentWord();
-    return  <VerbEntryForm key={verb.infinitive} verb={verb} showAnswers={this.state.showAnswers}>
+    return  <VerbEntryForm key={verb.infinitive} verb={verb} showAnswers={this.state.showAnswers} onKeyDown={this._onKeyDown}>
               <button type="submit" class="btn btn-default" onClick={this.onNextClick}>{this.isEof() ? 'Opnieuw' : 'Next'}</button>
               <button type="submit" class="btn" onClick={this.onHelpClickHandler}>Help!</button>
             </VerbEntryForm>
-  }
+  },
+  
+  _onKeyDown : function(event) {
+    const QUESTION_KEY_CODE = 191;
+    if (event.keyCode == QUESTION_KEY_CODE) {
+      this.onHelpClickHandler();
+      event.preventDefault();
+    }
+  },
+
 });
 
 const VerbEntryForm = React.createClass({
@@ -175,9 +184,11 @@ const VerbEntryForm = React.createClass({
     const ENTER_KEY_CODE = 13;
     if (event.keyCode == ENTER_KEY_CODE && !this._allAnsweredCorrectly()) {
       event.preventDefault();
-      return false;
+      return;
     }
-    return false;
+    if (this.props.onKeyDown) {
+      this.props.onKeyDown(event);
+    }
   },
 
   
