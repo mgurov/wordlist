@@ -4,6 +4,7 @@ import _ from "lodash";
 import Notes from "../components/verb/Notes.js";
 import Debouncer from "../components/Debouncer.js";
 import NumericInputForm from "../components/NumericInputForm.js";
+import SampleProgress from "../components/sample/SampleProgress.js";
 
 export default React.createClass({
   getInitialState: function() {
@@ -48,7 +49,10 @@ export default React.createClass({
   
   render: function() {
     if (this.state.words) {
-      return <RandomRow words={this.state.words} onDone={this.componentWillReceiveProps.bind(this)} />
+      return <div>
+        <SampleProgress />
+        <RandomRow words={this.state.words} onDone={this.componentWillReceiveProps.bind(this)} />
+        </div>
     } else {
       return <NumericInputForm onSubmit={this.onGo} defaultValue="15" caption="Sample size" buttonText="Randomize"/>
     }
