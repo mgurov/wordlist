@@ -192,7 +192,7 @@ const VerbEntryForm = React.createClass({
 const FormGroup = React.createClass({
   mixins: [Debouncer(function(){this.reEvaluate()})],
     
-  getInitialState: function() {return {evaluationClass: ''}},
+  getInitialState: function() {return {evaluationClass: '', hebben: true, zijn: false}},
   
   evaluateAnswer: function() {
      return (this.props.value == this.props.text) ? 'has-success' : 'has-error';
@@ -234,7 +234,7 @@ const FormGroup = React.createClass({
       input = <div className="input-group">
               <span class="input-group-addon">
                 <button tabIndex="-1" type="button" class="btn btn-default btn-sm active" title="perfectum met hebben">h</button>
-                <button tabIndex="-1" type="button" class="btn btn-default btn-sm" title="perfectum met zijn">i</button>
+                <button tabIndex="-1" type="button" class="btn btn-default btn-sm" title="perfectum met zijn">z</button>
               </span>
               {input}
             </div>
