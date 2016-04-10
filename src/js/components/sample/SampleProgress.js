@@ -6,11 +6,15 @@ const Progress = React.createClass({
     const steps = [];
     for (var i = 0; i < this.props.sample.length; i++) {
       const symbol = (i == this.props.current) ? '*' : '.';
-      
-      steps.push(<span key={i} >{symbol}</span>);
+      const that = this;
+      const thatI = i;
+      const onClick = function() {
+        that.props.onStepSelection(thatI);
+      }      
+      steps.push(<span key={i} onClick={onClick} >{symbol}</span>);
     }
-    return <div>{steps}</div>
-  }
+    return <div onClick={this._onClick}>{steps}</div>
+  },  
 });
 
 export default Progress;

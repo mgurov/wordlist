@@ -74,11 +74,18 @@ const RandomRow = React.createClass({
     if (this.isEof()) {
       this.props.onDone();
     } else {
-      this.setState({
-        position: this.state.position + 1,
-        showAnswers: false,
-      });
+      this.SetPosition(this.state.position + 1);
     }
+  },
+  
+  SetPosition: function(pos) {
+    if (pos < 0 || pos > this.props.words.length - 1) {
+      return;
+    }
+    this.setState({
+      position: pos,
+      showAnswers: false,
+    });    
   },
   
   onHelpClickHandler: function() {
@@ -92,7 +99,7 @@ const RandomRow = React.createClass({
   render: function() {
     const verb = this.getCurrentWord();
     return  <div>
-        <SampleProgress sample={this.props.words} current={this.state.position} />
+        <SampleProgress sample={this.props.words} current={this.state.position} onStepSelection={this.SetPosition}/>
         <VerbEntryForm key={verb.infinitive} verb={verb} showAnswers={this.state.showAnswers} onKeyDown={this._onKeyDown}>
               <button type="submit" class="btn btn-default" onClick={this.onNextClick}>{this.isEof() ? 'Opnieuw' : 'Next'}</button>
               <button type="submit" class="btn" onClick={this.onHelpClickHandler}>Help!</button>
