@@ -273,15 +273,11 @@ const FormGroup = React.createClass({
   render: function() {
     const {id, caption, showAnswer, hebbenActive, zijnActive, onHebIsChangeHandlerFactory, ...rest} = this.props;
     
-    var input = <input {...rest} 
-                id={id} 
-                className="form-control input-lg" 
-                type="text"
-                autoComplete="off"
-                autoCapitalize="none"
-                autoCorrect="off"
-                onBlur={this.reEvaluate} 
-                />
+    var input = <UserInputTextField
+                {...rest} 
+                id={id}
+                onBlur={this.reEvaluate}
+                 />
                 
    if (this.props.showIsHasSelection) {         
       const defaultClasses = 'btn btn-default btn-sm';
@@ -303,3 +299,14 @@ const FormGroup = React.createClass({
           </div>
   }
 });
+
+
+const UserInputTextField = function(props) {
+  return <input {...props} 
+                className="form-control input-lg" 
+                type="text"
+                autoComplete="off"
+                autoCapitalize="none"
+                autoCorrect="off"
+                />
+}
