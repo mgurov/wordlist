@@ -141,8 +141,35 @@ const VerbEntryForm = React.createClass({
     const {showAnswers} = this.props;
     const {verb} = this.state;
     const that = this;
+    
+    function parseAuxillaries(value) {
+        var hebbenActive = false;
+        var zijnActive = false;
+        if (value.indexOf('is') == 0) {
+          hebbenActive = false;
+          zijnActive = true;
+        } else if (value.indexOf('(is)') == 0) {
+          hebbenActive = true;
+          zijnActive = true;
+        } else {
+          hebbenActive = true;
+          zijnActive = false;
+        }
+        
+        return {hebbenActive, zijnActive}
+    }
+    
     function onChangeHandlerFactory (key) {
       return function(e) {
+        const newValue = e.target.value.toLowerCase();
+        verb.forms[key].actual = newValue;
+        that.setState({verb});
+      }
+    }
+    
+    function onHebIsChangeHandlerFactory (key) {
+      return function(e) {
+        
         const newValue = e.target.value.toLowerCase();
         verb.forms[key].actual = newValue;
         that.setState({verb});
@@ -152,26 +179,11 @@ const VerbEntryForm = React.createClass({
     const inputFields = ['imperfect_singular', 'imperfect_plural', 'perfect'].map((key, index) => {
         const form = verb.forms[key];
         const showIsHasSelection = key == 'perfect';
-        var hebbenActive = false;
-        var zijnActive = false;
-
-        if (showIsHasSelection) {
-          if (form.actual.indexOf('is ') == 0) {
-            hebbenActive = false;
-            zijnActive = true;
-          } else if (form.actual.indexOf('(is) ') == 0) {
-            hebbenActive = true;
-            zijnActive = true;
-          } else {
-            hebbenActive = true;
-            zijnActive = false;
-          }
-        }
 
         return <FormGroup key={key} id={key} caption={form.caption} autoFocus={index == 0}  
           text={form.expected} showAnswer={showAnswers} placeholder={verb.infinitive}
           value={form.actual} onChange={onChangeHandlerFactory(key)}
-          showIsHasSelection={showIsHasSelection} hebbenActive={hebbenActive} zijnActive={zijnActive} 
+          showIsHasSelection={showIsHasSelection} {...showIsHasSelection?parseAuxillaries(form.actual):{}} 
            />
     });
     
