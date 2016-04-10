@@ -286,8 +286,8 @@ const FormGroup = React.createClass({
       
       input = <div className="input-group">
               <span class="input-group-addon">
-                <button tabIndex="-1" type="button" class={hebbenClasses} onClick={onHebIsChangeHandlerFactory('hebben')} title="perfectum met hebben">h</button>
-                <button tabIndex="-1" type="button" class={zijnClasses} onClick={onHebIsChangeHandlerFactory('zijn')} title="perfectum met zijn">z</button>
+                <HebIsToggleButton class={hebbenClasses} onClick={onHebIsChangeHandlerFactory('hebben')} title="perfectum met hebben">h</HebIsToggleButton>
+                <HebIsToggleButton class={zijnClasses} onClick={onHebIsChangeHandlerFactory('zijn')} title="perfectum met zijn">z</HebIsToggleButton>
               </span>
               {input}
             </div>
@@ -309,4 +309,8 @@ const UserInputTextField = function(props) {
                 autoCapitalize="none"
                 autoCorrect="off"
                 />
+}
+
+const HebIsToggleButton = function(props) {
+  return <button {...props} tabIndex="-1" type="button" >{props.children}</button>
 }
