@@ -153,7 +153,9 @@ const VerbEntryForm = React.createClass({
         const form = verb.forms[key];
         return <FormGroup key={key} id={key} caption={form.caption} autoFocus={index == 0}  
           text={form.expected} showAnswer={showAnswers} placeholder={verb.infinitive}
-          value={form.actual} onChange={onChangeHandlerFactory(key)} />
+          value={form.actual} onChange={onChangeHandlerFactory(key)}
+          showIsHasSelection={key == 'perfect'}
+           />
     });
     
     return (
@@ -217,18 +219,27 @@ const FormGroup = React.createClass({
     
   render: function() {
     const {id, caption, showAnswer, ...rest} = this.props;
-        
+    
+    var input = <input {...rest} 
+                id={id} 
+                className="form-control input-lg" 
+                type="text"
+                autoComplete="off"
+                autoCapitalize="none"
+                autoCorrect="off"
+                onBlur={this.reEvaluate} 
+                />
+ 
+    if (this.props.showIsHasSelection) {
+      input = <div className="input-group">
+              <span class="input-group-addon">?</span>
+              {input}
+            </div>
+    }
+    
     return <div className={"form-group " + this.state.evaluationClass}>
             <label htmlFor={id}>{caption}{showAnswer ? ' -> ' + this.props.text : ''}</label>
-            <input {...rest} 
-              id={id} 
-              className="form-control input-lg" 
-              type="text"
-              autoComplete="off"
-              autoCapitalize="none"
-              autoCorrect="off"
-              onBlur={this.reEvaluate} 
-              />
+            {input}
           </div>
   }
 });
