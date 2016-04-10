@@ -92,7 +92,7 @@ const RandomRow = React.createClass({
   render: function() {
     const verb = this.getCurrentWord();
     return  <div>
-        <SampleProgress size={this.props.words.length} current={this.state.position} />
+        <SampleProgress sample={this.props.words} current={this.state.position} />
         <VerbEntryForm key={verb.infinitive} verb={verb} showAnswers={this.state.showAnswers} onKeyDown={this._onKeyDown}>
               <button type="submit" class="btn btn-default" onClick={this.onNextClick}>{this.isEof() ? 'Opnieuw' : 'Next'}</button>
               <button type="submit" class="btn" onClick={this.onHelpClickHandler}>Help!</button>
