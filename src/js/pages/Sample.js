@@ -279,15 +279,11 @@ const FormGroup = React.createClass({
                 onBlur={this.reEvaluate}
                  />
                 
-   if (this.props.showIsHasSelection) {         
-      const defaultClasses = 'btn btn-default btn-sm';
-      const hebbenClasses = defaultClasses + (hebbenActive ? ' active' : '');
-      const zijnClasses = defaultClasses + (zijnActive ? ' active' : '');
-      
+   if (this.props.showIsHasSelection) {               
       input = <div className="input-group">
               <span class="input-group-addon">
-                <HebIsToggleButton class={hebbenClasses} onClick={onHebIsChangeHandlerFactory('hebben')} title="perfectum met hebben">h</HebIsToggleButton>
-                <HebIsToggleButton class={zijnClasses} onClick={onHebIsChangeHandlerFactory('zijn')} title="perfectum met zijn">z</HebIsToggleButton>
+                <HebIsToggleButton active={hebbenActive} onClick={onHebIsChangeHandlerFactory('hebben')} title="perfectum met hebben">h</HebIsToggleButton>
+                <HebIsToggleButton active={zijnActive} onClick={onHebIsChangeHandlerFactory('zijn')} title="perfectum met zijn">z</HebIsToggleButton>
               </span>
               {input}
             </div>
@@ -312,5 +308,6 @@ const UserInputTextField = function(props) {
 }
 
 const HebIsToggleButton = function(props) {
-  return <button {...props} tabIndex="-1" type="button" >{props.children}</button>
+  const {active} = props; 
+  return <button {...props} className={'btn btn-default btn-sm' + (active ? ' active' : '')} tabIndex="-1" type="button" >{props.children}</button>
 }
