@@ -177,7 +177,7 @@ const VerbEntryForm = React.createClass({
             if (zijnActive) {
               newFormActual = newFormActual.replace(/^\(is\) /, 'is ');
             } else {
-              newFormActual = newFormActual.replace(/^is /, '');
+              newFormActual = 'is ' + newFormActual;
             }
           } else {
             if (zijnActive) {
