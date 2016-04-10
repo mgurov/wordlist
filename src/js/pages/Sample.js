@@ -151,10 +151,27 @@ const VerbEntryForm = React.createClass({
     
     const inputFields = ['imperfect_singular', 'imperfect_plural', 'perfect'].map((key, index) => {
         const form = verb.forms[key];
+        const showIsHasSelection = key == 'perfect';
+        var hebbenActive = false;
+        var zijnActive = false;
+
+        if (showIsHasSelection) {
+          if (form.actual.indexOf('is ') == 0) {
+            hebbenActive = false;
+            zijnActive = true;
+          } else if (form.actual.indexOf('(is) ') == 0) {
+            hebbenActive = true;
+            zijnActive = true;
+          } else {
+            hebbenActive = true;
+            zijnActive = false;
+          }
+        }
+
         return <FormGroup key={key} id={key} caption={form.caption} autoFocus={index == 0}  
           text={form.expected} showAnswer={showAnswers} placeholder={verb.infinitive}
           value={form.actual} onChange={onChangeHandlerFactory(key)}
-          showIsHasSelection={key == 'perfect'}
+          showIsHasSelection={showIsHasSelection} hebbenActive={hebbenActive} zijnActive={zijnActive} 
            />
     });
     
@@ -218,7 +235,7 @@ const FormGroup = React.createClass({
   },
     
   render: function() {
-    const {id, caption, showAnswer, ...rest} = this.props;
+    const {id, caption, showAnswer, hebbenActive, zijnActive, ...rest} = this.props;
     
     var input = <input {...rest} 
                 id={id} 
@@ -229,21 +246,8 @@ const FormGroup = React.createClass({
                 autoCorrect="off"
                 onBlur={this.reEvaluate} 
                 />
- 
-    if (this.props.showIsHasSelection) {
-      var hebbenActive = false;
-      var zijnActive = false;
-      if (this.props.value.indexOf('is ') == 0) {
-        hebbenActive = false;
-        zijnActive = true;
-      } else if (this.props.value.indexOf('(is) ') == 0) {
-        hebbenActive = true;
-        zijnActive = true;
-      } else {
-        hebbenActive = true;
-        zijnActive = false;
-      }
-      
+                
+   if (this.props.showIsHasSelection) {         
       const defaultClasses = 'btn btn-default btn-sm';
       const hebbenClasses = defaultClasses + (hebbenActive ? ' active' : '');
       const zijnClasses = defaultClasses + (zijnActive ? ' active' : '');
