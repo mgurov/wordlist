@@ -49,14 +49,14 @@ export default React.createClass({
     if (this.state.words) {
       return <RandomRow words={this.state.words} onDone={this.componentWillReceiveProps.bind(this)} />
     } else {
-      return <SizeInput onGo={this.onGo}/>
+      return <SizeInput onGo={this.onGo} defaultValue="15"/>
     }
   }
 
 });
 
 const SizeInput = React.createClass({
-  getInitialState: function() {return {value: 15};},
+  getInitialState: function() {return {value: this.props.defaultValue};},
   setValue: function(newValue) {
     this.setState({value: parseInt(newValue)});
   },
