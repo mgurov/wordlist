@@ -49,7 +49,7 @@ export default React.createClass({
     if (this.state.words) {
       return <RandomRow words={this.state.words} onDone={this.componentWillReceiveProps.bind(this)} />
     } else {
-      return <SizeInput onSubmit={this.onGo} defaultValue="15" caption="Sample size"/>
+      return <SizeInput onSubmit={this.onGo} defaultValue="15" caption="Sample size" buttonText="Randomize"/>
     }
   }
 
@@ -77,7 +77,7 @@ const SizeInput = React.createClass({
           <label for="sampleSize">{this.props.caption}</label>
           <input type="number" class="form-control" id="sampleSize" autoFocus valueLink={valueLink}/>
         </div>
-        <button type="submit" class="btn btn-default">Randomize</button>
+        { this.props.buttonText ? <button type="submit" class="btn btn-default">{this.props.buttonText}</button> : null }
       </form>
     );
   }
