@@ -145,10 +145,10 @@ const VerbEntryForm = React.createClass({
     function parseAuxillaries(value) {
         var hebbenActive = false;
         var zijnActive = false;
-        if (value.indexOf('is') == 0) {
+        if (value.indexOf('is ') == 0) {
           hebbenActive = false;
           zijnActive = true;
-        } else if (value.indexOf('(is)') == 0) {
+        } else if (value.indexOf('(is) ') == 0) {
           hebbenActive = true;
           zijnActive = true;
         } else {
@@ -169,9 +169,33 @@ const VerbEntryForm = React.createClass({
     
     function onHebIsChangeHandlerFactory (key) {
       return function(e) {
-        
-        const newValue = e.target.value.toLowerCase();
-        verb.forms[key].actual = newValue;
+        const {perfect} = verb.forms;
+        const {hebbenActive, zijnActive} = parseAuxillaries(perfect.actual);
+        var newFormActual = perfect.actual;
+        if (key == 'hebben') {
+          if (hebbenActive) {
+            if (zijnActive) {
+              newFormActual = newFormActual.replace(/^\(is\) /, 'is ');
+            } else {
+              newFormActual = newFormActual.replace(/^is /, '');
+            }
+          } else {
+            if (zijnActive) {
+              newFormActual = newFormActual.replace(/^is /, '(is) ');
+            }
+          }
+        } else {
+          if (zijnActive) {
+            newFormActual = newFormActual.replace(/^\(?is\)? /, '');
+          } else {
+            if (hebbenActive) {
+              newFormActual = '(is) ' + newFormActual;
+            } else {
+              newFormActual = 'is ' + newFormActual;
+            }
+          }
+        }
+        perfect.actual = newFormActual;
         that.setState({verb});
       }
     }
@@ -183,7 +207,7 @@ const VerbEntryForm = React.createClass({
         return <FormGroup key={key} id={key} caption={form.caption} autoFocus={index == 0}  
           text={form.expected} showAnswer={showAnswers} placeholder={verb.infinitive}
           value={form.actual} onChange={onChangeHandlerFactory(key)}
-          showIsHasSelection={showIsHasSelection} {...showIsHasSelection?parseAuxillaries(form.actual):{}} 
+          showIsHasSelection={showIsHasSelection} {...showIsHasSelection?parseAuxillaries(form.actual):{}} onHebIsChangeHandlerFactory={onHebIsChangeHandlerFactory} 
            />
     });
     
@@ -247,7 +271,7 @@ const FormGroup = React.createClass({
   },
     
   render: function() {
-    const {id, caption, showAnswer, hebbenActive, zijnActive, ...rest} = this.props;
+    const {id, caption, showAnswer, hebbenActive, zijnActive, onHebIsChangeHandlerFactory, ...rest} = this.props;
     
     var input = <input {...rest} 
                 id={id} 
@@ -266,8 +290,8 @@ const FormGroup = React.createClass({
       
       input = <div className="input-group">
               <span class="input-group-addon">
-                <button tabIndex="-1" type="button" class={hebbenClasses} title="perfectum met hebben">h</button>
-                <button tabIndex="-1" type="button" class={zijnClasses} title="perfectum met zijn">z</button>
+                <button tabIndex="-1" type="button" class={hebbenClasses} onClick={onHebIsChangeHandlerFactory('hebben')} title="perfectum met hebben">h</button>
+                <button tabIndex="-1" type="button" class={zijnClasses} onClick={onHebIsChangeHandlerFactory('zijn')} title="perfectum met zijn">z</button>
               </span>
               {input}
             </div>
