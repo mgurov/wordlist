@@ -232,7 +232,10 @@ const FormGroup = React.createClass({
  
     if (this.props.showIsHasSelection) {
       input = <div className="input-group">
-              <span class="input-group-addon">?</span>
+              <span class="input-group-addon">
+                <button type="button" class="btn btn-default btn-sm active">h</button>
+                <button type="button" class="btn btn-default btn-sm">i</button>
+              </span>
               {input}
             </div>
     }
