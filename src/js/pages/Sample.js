@@ -42,6 +42,7 @@ export default React.createClass({
           };
         });
         verb.isAnswered = isAnswered;
+        verb.touched = false;
         return verb;
       });
     
@@ -107,6 +108,7 @@ const RandomRow = React.createClass({
   
   render: function() {
     const verb = this.getCurrentWord();
+    verb.touched = true;
     return  <div>
         <SampleProgress sample={this.props.words} current={this.state.position} onStepSelection={this.SetPosition}/>
         <VerbEntryForm key={verb.infinitive} verb={verb} showAnswers={this.state.showAnswers} onKeyDown={this._onKeyDown}>

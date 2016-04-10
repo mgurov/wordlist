@@ -9,15 +9,19 @@ const Progress = React.createClass({
     const {sample, current} = this.props;
     const steps = [];
     for (var i = 0; i < sample.length; i++) {
+      const thisVerb = sample[i];
       var symbol;
       var color = undefined;            
       if (i == current) {
         symbol = '*';
-      } else if (sample[i].isAnswered()) {
+      } else if (thisVerb.isAnswered()) {
         symbol = '.';
         color = 'green';
       } else {
         symbol = '.';
+        if (thisVerb.touched) {
+          color = 'red';
+        }
       }
       
       const onClick = _.bind(this.props.onStepSelection, this, i);
