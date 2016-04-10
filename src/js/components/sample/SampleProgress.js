@@ -8,26 +8,31 @@ const Progress = React.createClass({
     
     const {sample, current} = this.props;
     const steps = [];
+    const stepsPercentage = 100 / sample.length;
     for (var i = 0; i < sample.length; i++) {
       const thisVerb = sample[i];
-      var symbol;
-      var color = undefined;            
+      var statusClass;            
       if (i == current) {
-        symbol = '*';
+        statusClass = 'warning progress-bar-striped active';
       } else if (thisVerb.isAnswered()) {
-        symbol = '.';
-        color = 'green';
+        statusClass = 'success';
+      } else if (thisVerb.touched) {
+        statusClass = 'danger';
       } else {
-        symbol = '.';
-        if (thisVerb.touched) {
-          color = 'red';
-        }
+        statusClass = 'warning';
       }
       
       const onClick = _.bind(this.props.onStepSelection, this, i);
-      steps.push(<span key={i} onClick={onClick} style={{color}} >{symbol}</span>);
+      steps.push(
+            <div key={i} className={"progress-bar progress-bar-" + statusClass} style={{width: stepsPercentage + '%'}}
+               onClick={onClick}
+               title={thisVerb.infinitive}
+             >
+              <span class="sr-only">{stepsPercentage}% Complete ({statusClass})</span>
+            </div>
+      )
     }
-    return <div>{steps}</div>
+    return <div class="progress">{steps}</div>
   },  
 });
 
