@@ -231,10 +231,27 @@ const FormGroup = React.createClass({
                 />
  
     if (this.props.showIsHasSelection) {
+      var hebbenActive = false;
+      var zijnActive = false;
+      if (this.props.value.indexOf('is ') == 0) {
+        hebbenActive = false;
+        zijnActive = true;
+      } else if (this.props.value.indexOf('(is) ') == 0) {
+        hebbenActive = true;
+        zijnActive = true;
+      } else {
+        hebbenActive = true;
+        zijnActive = false;
+      }
+      
+      const defaultClasses = 'btn btn-default btn-sm';
+      const hebbenClasses = defaultClasses + (hebbenActive ? ' active' : '');
+      const zijnClasses = defaultClasses + (zijnActive ? ' active' : '');
+      
       input = <div className="input-group">
               <span class="input-group-addon">
-                <button tabIndex="-1" type="button" class="btn btn-default btn-sm active" title="perfectum met hebben">h</button>
-                <button tabIndex="-1" type="button" class="btn btn-default btn-sm" title="perfectum met zijn">z</button>
+                <button tabIndex="-1" type="button" class={hebbenClasses} title="perfectum met hebben">h</button>
+                <button tabIndex="-1" type="button" class={zijnClasses} title="perfectum met zijn">z</button>
               </span>
               {input}
             </div>
