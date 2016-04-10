@@ -20,6 +20,14 @@ export default React.createClass({
       'imperfect_plural': 'Imperfectum plural',
       'perfect': 'Perfectum', 
     };
+    
+    function isAnswered() {
+      const verb = this;
+      const anyFalse = _.find(verb.forms, (form) => {
+        return form.actual != form.expected; 
+      });
+      return !anyFalse;
+    }
 
     const words = 
       _.sampleSize(WordlistStore.getAll(), sampleSize)
@@ -33,6 +41,7 @@ export default React.createClass({
             caption: captionMapping[key],
           };
         });
+        verb.isAnswered = isAnswered;
         return verb;
       });
     
@@ -159,10 +168,7 @@ const VerbEntryForm = React.createClass({
   
   _allAnsweredCorrectly: function() {
     const {verb} = this.state;
-    const anyFalse = _.find(verb.forms, (form) => {
-      return form.actual != form.expected; 
-    });
-    return !anyFalse;
+    return verb.isAnswered();
   },
   
   _onKeyDown : function(event) {
