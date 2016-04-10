@@ -49,10 +49,7 @@ export default React.createClass({
   
   render: function() {
     if (this.state.words) {
-      return <div>
-        <SampleProgress />
-        <RandomRow words={this.state.words} onDone={this.componentWillReceiveProps.bind(this)} />
-        </div>
+      return <RandomRow words={this.state.words} onDone={this.componentWillReceiveProps.bind(this)} />
     } else {
       return <NumericInputForm onSubmit={this.onGo} defaultValue="15" caption="Sample size" buttonText="Randomize"/>
     }
@@ -94,10 +91,13 @@ const RandomRow = React.createClass({
   
   render: function() {
     const verb = this.getCurrentWord();
-    return  <VerbEntryForm key={verb.infinitive} verb={verb} showAnswers={this.state.showAnswers} onKeyDown={this._onKeyDown}>
+    return  <div>
+        <SampleProgress size={this.props.words.length} selected={this.state.position} />
+        <VerbEntryForm key={verb.infinitive} verb={verb} showAnswers={this.state.showAnswers} onKeyDown={this._onKeyDown}>
               <button type="submit" class="btn btn-default" onClick={this.onNextClick}>{this.isEof() ? 'Opnieuw' : 'Next'}</button>
               <button type="submit" class="btn" onClick={this.onHelpClickHandler}>Help!</button>
-            </VerbEntryForm>
+            </VerbEntryForm>        
+        </div>    
   },
   
   _onKeyDown : function(event) {
