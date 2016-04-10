@@ -80,11 +80,29 @@ const RandomRow = React.createClass({
     return this.props.words[this.state.position];
   },
   
+  _nextUnansweredPosition: function() {
+    const firstFollowing = this._nextUnansweredPositionInRange(this.state.position + 1, this.props.words.length - 1);
+    if (firstFollowing != -1) {
+      return firstFollowing;
+    }
+    return this._nextUnansweredPositionInRange(0, this.state.position);
+  },
+  
+  _nextUnansweredPositionInRange: function(from, toInclusive) {
+    for (var i = from; i <= toInclusive; i++) {
+      if (!this.props.words[i].isAnswered()) {
+        return i;
+      }
+    }
+    return -1;
+  },
+
   onNextClick: function() {
-    if (this.isEof()) {
-      this.props.onDone();
+    var nextUnansweredPosition = this._nextUnansweredPosition();
+    if (nextUnansweredPosition != -1) {
+      this.SetPosition(nextUnansweredPosition);
     } else {
-      this.SetPosition(this.state.position + 1);
+      this.props.onDone();
     }
   },
   
@@ -112,7 +130,7 @@ const RandomRow = React.createClass({
     return  <div>
         <SampleProgress sample={this.props.words} current={this.state.position} onStepSelection={this.SetPosition}/>
         <VerbEntryForm key={verb.infinitive} verb={verb} showAnswers={this.state.showAnswers} onKeyDown={this._onKeyDown}>
-              <button type="submit" class="btn btn-default" onClick={this.onNextClick}>{this.isEof() ? 'Opnieuw' : 'Next'}</button>
+              <button type="submit" class="btn btn-default" onClick={this.onNextClick}>{this._nextUnansweredPosition() == -1 ? 'Opnieuw' : 'Next'}</button>
               <button type="submit" class="btn" onClick={this.onHelpClickHandler}>Help!</button>
             </VerbEntryForm>        
         </div>    
