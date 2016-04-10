@@ -3,6 +3,7 @@ import WordlistStore from "../stores/WordlistStore";
 import _ from "lodash";
 import Notes from "../components/verb/Notes.js";
 import Debouncer from "../components/Debouncer.js";
+import NumericInputForm from "../components/NumericInputForm.js";
 
 export default React.createClass({
   getInitialState: function() {
@@ -49,38 +50,10 @@ export default React.createClass({
     if (this.state.words) {
       return <RandomRow words={this.state.words} onDone={this.componentWillReceiveProps.bind(this)} />
     } else {
-      return <SizeInput onSubmit={this.onGo} defaultValue="15" caption="Sample size" buttonText="Randomize"/>
+      return <NumericInputForm onSubmit={this.onGo} defaultValue="15" caption="Sample size" buttonText="Randomize"/>
     }
   }
 
-});
-
-const SizeInput = React.createClass({
-  getInitialState: function() {return {value: this.props.defaultValue};},
-  setValue: function(newValue) {
-    this.setState({value: parseInt(newValue)});
-  },
-  onSubmit: function() {
-    if (this.state.value > 0) {
-      this.props.onSubmit(this.state.value);
-    }
-  },
-  render: function() {
-    const valueLink = {
-      value: this.state.value,
-      requestChange: this.setValue
-    };
-    
-    return (
-      <form class="form-inline" onSubmit={this.onSubmit}>
-        <div class="form-group">
-          <label for="sampleSize">{this.props.caption}</label>
-          <input type="number" class="form-control" id="sampleSize" autoFocus valueLink={valueLink}/>
-        </div>
-        { this.props.buttonText ? <button type="submit" class="btn btn-default">{this.props.buttonText}</button> : null }
-      </form>
-    );
-  }
 });
 
 const RandomRow = React.createClass({
